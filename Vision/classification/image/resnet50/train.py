@@ -257,6 +257,7 @@ class Trainer(object):
             else:
                 top1_acc = 0
 
+            loss = loss * self.world_size
             self.meter_train_iter(loss, top1_acc)
 
             self.cur_batch += 1
