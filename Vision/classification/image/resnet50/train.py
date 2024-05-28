@@ -26,6 +26,7 @@ from utils.stat import CudaUtilMemStat
 class Trainer(object):
     def __init__(self):
         args = get_args()
+        self.device = args.device
         for k, v in args.__dict__.items():
             setattr(self, k, v)
 
@@ -89,12 +90,12 @@ class Trainer(object):
         start_t = time.perf_counter()
 
         if self.is_global:
-            placement = flow.env.all_device_placement("cuda")
+            placement = flow.env.all_device_placement(self.device)
             self.model = self.model.to_global(
                 placement=placement, sbp=flow.sbp.broadcast
             )
         else:
-            self.model = self.model.to("cuda")
+            self.model = self.model.to(self.device)
 
         if self.load_path is None:
             self.legacy_init_parameters()
@@ -311,8 +312,8 @@ class Trainer(object):
 
     def forward(self):
         image, label = self.train_data_loader()
-        image = image.to("cuda")
-        label = label.to("cuda")
+        image = image.to(self.device)
+        label = label.to(self.device)
         logits = self.model(image)
         loss = self.cross_entropy(logits, label)
         if self.metric_train_acc:
@@ -323,8 +324,8 @@ class Trainer(object):
 
     def inference(self):
         image, label = self.val_data_loader()
-        image = image.to("cuda")
-        label = label.to("cuda")
+        image = image.to(self.device)
+        label = label.to(self.device)
         with flow.no_grad():
             logits = self.model(image)
             pred = logits.softmax()
