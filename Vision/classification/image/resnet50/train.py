@@ -9,6 +9,7 @@ import numpy as np
 import time
 
 import oneflow as flow
+import oneflow_npu
 from oneflow.nn.parallel import DistributedDataParallel as ddp
 
 from config import get_args

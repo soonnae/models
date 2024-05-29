@@ -163,11 +163,11 @@ class OFRecordDataLoader(flow.nn.Module):
             else:
                 image_raw_bytes = self.image_decoder(record)
                 image = self.resize(image_raw_bytes)[0]
-                image = image.to(self.device)
 
             label = self.label_decoder(record)
             flip_code = self.flip()
-            flip_code = flip_code.to(self.device)
+            if self.use_gpu_decode:
+                flip_code = flip_code.to(self.device)
             image = self.crop_mirror_norm(image, flip_code)
         else:
             record = self.ofrecord_reader()
