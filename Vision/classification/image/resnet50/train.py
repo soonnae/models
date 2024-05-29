@@ -270,7 +270,7 @@ class Trainer(object):
         if loss.is_global and self.scale_grad:
             # NOTE(zwx): scale init grad with world_size
             # because global_tensor.mean() include dividor numel * world_size
-            loss = loss / self.world_size
+            # loss = loss / self.world_size
             loss.backward()
             for param_group in self.optimizer.param_groups:
                 for param in param_group.parameters:
