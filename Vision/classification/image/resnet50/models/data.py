@@ -167,6 +167,7 @@ class OFRecordDataLoader(flow.nn.Module):
             label = self.label_decoder(record)
             flip_code = self.flip()
             if self.use_gpu_decode:
+                # todo NPU: image will down grade to cpu
                 flip_code = flip_code.to(self.device)
             image = self.crop_mirror_norm(image, flip_code)
         else:

@@ -278,7 +278,7 @@ class Trainer(object):
                     param.grad /= self.world_size
         else:
             loss.backward()
-            loss = loss / self.world_size
+            #loss = loss / self.world_size
 
         self.optimizer.step()
         self.optimizer.zero_grad()
