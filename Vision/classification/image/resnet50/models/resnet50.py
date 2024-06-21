@@ -5,7 +5,13 @@ import oneflow.nn as nn
 from oneflow import Tensor
 from typing import Type, Any, Callable, Union, List, Optional
 
-
+import numpy as np
+import random
+seed = 0
+flow.manual_seed(seed)
+# flow.seed(seed)
+np.random.seed(seed)
+random.seed(seed)
 def conv3x3(
     in_planes: int, out_planes: int, stride: int = 1, groups: int = 1, dilation: int = 1
 ) -> nn.Conv2d:
@@ -26,6 +32,10 @@ def conv1x1(in_planes: int, out_planes: int, stride: int = 1) -> nn.Conv2d:
     """1x1 convolution"""
     return nn.Conv2d(in_planes, out_planes, kernel_size=1, stride=stride, bias=False)
 
+def save_tensor_data(tensor, file_name):
+        numpy_array = tensor.clone().detach().cpu().numpy()
+        np.save(file_name, numpy_array)
+        
 
 class BasicBlock(nn.Module):
     expansion: int = 1
@@ -208,7 +218,9 @@ class ResNet(nn.Module):
         self.conv1 = nn.Conv2d(
             channel_size, self.inplanes, kernel_size=7, stride=2, padding=3, bias=False
         )
-
+        print("===========self.conv1.weight=================")
+        print(self.conv1.weight.shape)
+        print(self.conv1.weight)
         if self.fuse_bn_relu:
             self.bn1 = nn.FusedBatchNorm2d(self.inplanes)
         else:
@@ -308,7 +320,19 @@ class ResNet(nn.Module):
                 paddings = (0, 0, 0, 0, 0, 1)
             x = flow._C.pad(x, pad=paddings, mode="constant", value=0)
         print(f"before conv1 x = {x}")
+        print("===========保存原始数据=====")
+        # if(x.is_global):
+        #     print("=============2=============")
+        #     save_tensor_data(x, "before_conv1_2.npy")
+        # else:
+        #     print("=============1=============")
+        #     save_tensor_data(x, "before_conv1_1.npy")
         x = self.conv1(x)
+        print("===========保存结果=====")
+        # if(x.is_global):
+        #     save_tensor_data(x, "after_conv1_2.npy")
+        # else:
+        #     save_tensor_data(x, "after_conv1_1.npy")
         print(f"after conv1 x = {x}")
         if self.fuse_bn_relu:
             x = self.bn1(x, None)
