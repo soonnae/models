@@ -69,6 +69,7 @@ class Trainer(object):
         self.acc = Accuracy()
 
         if self.graph:
+            print("===================graph====================")
             self.train_graph = make_train_graph(
                 self.model,
                 self.cross_entropy,

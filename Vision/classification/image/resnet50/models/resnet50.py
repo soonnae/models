@@ -307,22 +307,33 @@ class ResNet(nn.Module):
                 # NCHW
                 paddings = (0, 0, 0, 0, 0, 1)
             x = flow._C.pad(x, pad=paddings, mode="constant", value=0)
+        print(f"before conv1 x = {x}")
         x = self.conv1(x)
+        print(f"after conv1 x = {x}")
         if self.fuse_bn_relu:
             x = self.bn1(x, None)
         else:
             x = self.bn1(x)
             x = self.relu(x)
+        print(f"after fuse_bn_relu x = {x}")
         x = self.maxpool(x)
+        print(f"after maxpool x = {x}")
 
         x = self.layer1(x)
+        print(f"after layer1 x = {x}")
         x = self.layer2(x)
+        print(f"after layer2 x = {x}")
         x = self.layer3(x)
+        print(f"after layer3 x = {x}")
         x = self.layer4(x)
+        print(f"after layer4 x = {x}")
 
         x = self.avgpool(x)
+        print(f"after avgpool x = {x}")
         x = flow.flatten(x, 1)
+        print(f"after flatten x = {x}")
         x = self.fc(x)
+        print(f"after fc x = {x}")
 
         return x
 
