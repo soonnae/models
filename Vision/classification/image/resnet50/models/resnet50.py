@@ -320,19 +320,7 @@ class ResNet(nn.Module):
                 paddings = (0, 0, 0, 0, 0, 1)
             x = flow._C.pad(x, pad=paddings, mode="constant", value=0)
         print(f"before conv1 x = {x}")
-        print("===========保存原始数据=====")
-        # if(x.is_global):
-        #     print("=============2=============")
-        #     save_tensor_data(x, "before_conv1_2.npy")
-        # else:
-        #     print("=============1=============")
-        #     save_tensor_data(x, "before_conv1_1.npy")
         x = self.conv1(x)
-        print("===========保存结果=====")
-        # if(x.is_global):
-        #     save_tensor_data(x, "after_conv1_2.npy")
-        # else:
-        #     save_tensor_data(x, "after_conv1_1.npy")
         print(f"after conv1 x = {x}")
         if self.fuse_bn_relu:
             x = self.bn1(x, None)

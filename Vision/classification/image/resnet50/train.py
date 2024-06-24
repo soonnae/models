@@ -253,6 +253,7 @@ class Trainer(object):
             self.cur_iter += 1
 
             loss = tol(loss, self.metric_local)
+            print(f"tol(loss, self.metric_local) loss = {loss}")
             if pred is not None and label is not None:
                 pred = tol(pred, self.metric_local)
                 label = tol(label, self.metric_local)
@@ -273,19 +274,22 @@ class Trainer(object):
             # NOTE(zwx): scale init grad with world_size
             # because global_tensor.mean() include dividor numel * world_size
             loss = loss / self.world_size
+            print(f"self.scale_grad loss = {loss}")
             loss.backward()
+            print(f"loss.backward() loss = {loss}")
             for param_group in self.optimizer.param_groups:
                 for param in param_group.parameters:
                     param.grad /= self.world_size
         else:
             loss.backward()
+            print(f"loss.backward() loss = {loss}")
             #loss = loss / self.world_size
 
         self.optimizer.step()
         self.optimizer.zero_grad()
         if self.lr_scheduler:
             self.lr_scheduler.step()
-
+        print(f"train_eager loss = {loss}")
         return loss, pred, label
 
     def eval(self):
@@ -317,7 +321,9 @@ class Trainer(object):
         image = image.to(self.device)
         label = label.to(self.device)
         logits = self.model(image)
+        print(f"logits = {logits}")
         loss = self.cross_entropy(logits, label)
+        print(f"loss = {loss}")
         if self.metric_train_acc:
             pred = logits.softmax()
             return loss, pred, label
@@ -355,8 +361,12 @@ def tol(tensor, pure_local=True):
     if tensor.is_global:
         if pure_local:
             tensor = tensor.to_local()
+            print("pure_local:")
+            print(tensor)
         else:
             tensor = tensor.to_global(sbp=flow.sbp.broadcast).to_local()
+            print("pure_local else: ")
+            print(tensor)
 
     return tensor
 

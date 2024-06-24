@@ -1,7 +1,7 @@
 # set -aux
 unset http_proxy
 unset https_proxy
-DEVICE_NUM_PER_NODE=1
+DEVICE_NUM_PER_NODE=2
 MASTER_ADDR=127.0.0.1
 NUM_NODES=1
 NODE_RANK=0
@@ -41,7 +41,7 @@ python3 -m oneflow.distributed.launch \
     $SRC_DIR/train.py \
         --device npu \
         --label-smoothing 0 \
-	--print-interval 100 \
+	--print-interval 1 \
         --save $CHECKPOINT_SAVE_PATH \
         --ofrecord-path $OFRECORD_PATH \
         --ofrecord-part-num $OFRECORD_PART_NUM \
