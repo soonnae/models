@@ -49,5 +49,4 @@ python3 -m oneflow.distributed.launch \
         --val-batch-size $VAL_BATCH_SIZE \
         --scale-grad \
         --graph \
-        --fuse-bn-relu \
-        --fuse-bn-add-relu \
+
