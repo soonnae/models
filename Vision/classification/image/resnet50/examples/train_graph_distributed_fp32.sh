@@ -37,8 +37,7 @@ python3 -m oneflow.distributed.launch \
     $SRC_DIR/train.py \
         --device npu \
         --label-smoothing 0 \
-        --print-interval 10 \
-        --save $CHECKPOINT_SAVE_PATH \
+        --print-interval 100 \
         --ofrecord-path $OFRECORD_PATH \
         --ofrecord-part-num $OFRECORD_PART_NUM \
         --num-devices-per-node $DEVICE_NUM_PER_NODE \
@@ -47,6 +46,7 @@ python3 -m oneflow.distributed.launch \
         --num-epochs $EPOCH \
         --train-batch-size $TRAIN_BATCH_SIZE \
         --val-batch-size $VAL_BATCH_SIZE \
-        --scale-grad \
         --graph \
+        --skip-eval \
+        # --scale-grad \
 
