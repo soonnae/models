@@ -46,7 +46,8 @@ def make_data_loader(args, mode, is_global=False, synthetic=False):
         placement=placement,
         sbp=sbp,
         use_gpu_decode=args.use_gpu_decode,
-        device=args.device,
+        device="cpu",
+        #device=args.device,
     )
     return ofrecord_data_loader
 
