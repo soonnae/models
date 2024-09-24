@@ -58,7 +58,7 @@ class Trainer(object):
         self.cross_entropy = make_cross_entropy(args)
 
         self.train_data_loader = make_data_loader(
-            args, "train", self.is_global, self.synthetic_data
+            args, "validation", self.is_global, self.synthetic_data
         )
         self.val_data_loader = make_data_loader(
             args, "validation", self.is_global, self.synthetic_data
@@ -249,6 +249,13 @@ class Trainer(object):
             else:
                 loss, pred, label = self.train_eager()
 
+            print("loss")
+            print(loss)
+            print("pred")
+            print(pred)
+            print("label")
+            print(label)
+            exit()
             self.cur_iter += 1
 
             loss = tol(loss, self.metric_local)
