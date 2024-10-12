@@ -87,6 +87,22 @@ def parse_args(ignore_unknown_args=False):
         dest="fuse_bn_add_relu",
         help="Whether to use use fuse batch_normalization, add and relu.",
     )
+    parser.add_argument(
+        "--disable-fuse-add-to-output",
+        action="store_false",
+        dest="fuse_add_to_output",
+        help="Disable fusion of the add operation into the output (enabled by default). \n"
+        "For more details, see `graph_config.py` in the OneFlow repository: \n"
+        "https://github.com/Oneflow-Inc/oneflow",
+    )
+    parser.add_argument(
+        "--disable-fuse-model-update-ops",
+        action="store_false",
+        dest="fuse_model_update_ops",
+        help="Disable fusion of the model update operations (enabled by default). \n"
+        "For more details, see `graph_config.py` in the OneFlow repository: \n"
+        "https://github.com/Oneflow-Inc/oneflow",
+    )
 
     # training hyper-parameters
     parser.add_argument(
