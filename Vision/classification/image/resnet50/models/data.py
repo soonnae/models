@@ -45,7 +45,6 @@ def make_data_loader(args, mode, is_global=False, synthetic=False):
         channel_last=args.channel_last,
         placement=placement,
         sbp=sbp,
-        use_gpu_decode=args.use_gpu_decode,
         device=args.data_loading_device,
     )
     return ofrecord_data_loader
@@ -63,7 +62,6 @@ class OFRecordDataLoader(flow.nn.Module):
         channel_last=False,
         placement=None,
         sbp=None,
-        use_gpu_decode=False,
         device="cuda",
     ):
         super().__init__()
@@ -105,9 +103,8 @@ class OFRecordDataLoader(flow.nn.Module):
         rgb_mean = [123.68, 116.779, 103.939]
         rgb_std = [58.393, 57.12, 57.375]
 
-        self.use_gpu_decode = use_gpu_decode
         if self.mode == "train":
-            if self.use_gpu_decode:
+            if self.device == "cuda":
                 self.bytesdecoder_img = flow.nn.OFRecordBytesDecoder("encoded")
                 self.image_decoder = flow.nn.OFRecordImageGpuDecoderRandomCropResize(
                     target_width=image_width,
@@ -157,7 +154,7 @@ class OFRecordDataLoader(flow.nn.Module):
     def forward(self):
         if self.mode == "train":
             record = self.ofrecord_reader()
-            if self.use_gpu_decode:
+            if self.device == "cuda":
                 encoded = self.bytesdecoder_img(record)
                 image = self.image_decoder(encoded)
             else:
@@ -166,8 +163,7 @@ class OFRecordDataLoader(flow.nn.Module):
 
             label = self.label_decoder(record)
             flip_code = self.flip()
-            if self.use_gpu_decode:
-                # todo NPU: image will down grade to cpu
+            if self.device == "cuda":
                 flip_code = flip_code.to(self.device)
             image = self.crop_mirror_norm(image, flip_code)
         else:

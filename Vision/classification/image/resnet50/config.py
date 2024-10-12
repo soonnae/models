@@ -69,12 +69,6 @@ def parse_args(ignore_unknown_args=False):
         help="ofrecord data part number",
     )
     parser.add_argument(
-        "--use-gpu-decode",
-        action="store_true",
-        dest="use_gpu_decode",
-        help="Use gpu decode.",
-    )
-    parser.add_argument(
         "--synthetic-data",
         action="store_true",
         dest="synthetic_data",
