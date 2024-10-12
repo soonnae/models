@@ -40,5 +40,6 @@ python3 $SRC_DIR/train.py \
     --use-gpu-decode \
     --samples-per-epoch 50 \
     --val-samples-per-epoch 50 \
+    --use-gpu-decode \
     --scale-grad \
     --graph \
