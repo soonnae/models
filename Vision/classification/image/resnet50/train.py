@@ -9,7 +9,6 @@ import numpy as np
 import time
 
 import oneflow as flow
-import oneflow_npu
 from oneflow.nn.parallel import DistributedDataParallel as ddp
 
 from config import get_args
@@ -27,7 +26,12 @@ from utils.stat import CudaUtilMemStat
 class Trainer(object):
     def __init__(self):
         args = get_args()
-        self.device = args.device
+        self.device = args.device.lower()
+        if self.device == "npu":
+            import oneflow_npu
+        elif self.device == "xpu": 
+            import oneflow_xpu
+
         for k, v in args.__dict__.items():
             setattr(self, k, v)
 
