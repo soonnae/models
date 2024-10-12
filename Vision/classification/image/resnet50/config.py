@@ -28,6 +28,13 @@ def parse_args(ignore_unknown_args=False):
     )
     parser.add_argument("--device", type=str, default="cuda", help="device: cpu, cuda...")
     parser.add_argument(
+        "--data-loading-device",
+        type=str,
+        default="cuda",
+        choices=["cpu", "cuda"],
+        help="Specify the device for data loading: 'cpu' or 'cuda' (default: 'cuda')."
+    )
+    parser.add_argument(
         "--save",
         type=str,
         default=None,
