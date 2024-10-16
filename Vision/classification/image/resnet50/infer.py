@@ -10,7 +10,6 @@ import numpy as np
 import time
 
 import oneflow as flow
-import oneflow_npu
 
 from models.resnet50 import resnet50
 from utils.imagenet1000_clsidx_to_labels import clsidx_2_labels
@@ -55,6 +54,9 @@ class InferGraph(flow.nn.Graph):
 
 def main(args):
     start_t = time.perf_counter()
+
+    if args.device == "npu":
+        import oneflow_npu 
 
     print("***** Model Init *****")
     model = resnet50()
