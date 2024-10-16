@@ -10,6 +10,7 @@ import numpy as np
 import time
 
 import oneflow as flow
+import oneflow_npu
 
 from models.resnet50 import resnet50
 from utils.imagenet1000_clsidx_to_labels import clsidx_2_labels
@@ -32,6 +33,9 @@ def _parse_args():
         required=True,
         dest="image_path",
         help="input image path",
+    )
+    parser.add_argument(
+        "--device", type=str, default="cuda", choices=["cuda", "cpu", "npu"], help="device"
     )
     parser.add_argument("--graph", action="store_true", help="Run model in graph mode.")
     return parser.parse_args()
