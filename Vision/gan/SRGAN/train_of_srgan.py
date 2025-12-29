@@ -2,7 +2,7 @@ import argparse
 import os
 import numpy as np
 import time
-import pickle
+import json
 import oneflow as flow
 import oneflow.optim as optim
 from tqdm import tqdm
@@ -74,9 +74,9 @@ def to_tensor(x, grad=True, dtype=flow.float32):
 
 
 def save_obj(obj, name):
-    with open(name + ".pkl", "wb") as f:
-        pickle.dump(obj, f, pickle.HIGHEST_PROTOCOL)
-    print("Save {} done.".format(name + ".pkl"))
+    with open(name + ".json", "w") as f:
+        json.dump(obj, f)
+    print("Save {} done.".format(name + ".json"))
 
 
 if __name__ == "__main__":

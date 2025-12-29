@@ -12,7 +12,7 @@ from otrans.train.utils import (
     map_to_cuda,
     AuxiliaryLossAverageMeter,
 )
-import pickle
+import json  # Use JSON instead of pickle
 import shutil
 
 logger = logging.getLogger(__name__)
@@ -254,12 +254,12 @@ class Trainer(object):
 
     def save_optimizer_state_dict(self, save_name=None):
         if save_name is None:
-            save_name = "latest_optimizer.pt"
+            save_name = "latest_optimizer.json"
 
-        with open(os.path.join(self.expdir, save_name), "wb") as f:
-            pickle.dump(self.optimizer.state_dict(), f)
-        with open(os.path.join(self.expdir, save_name), "wb") as f:
-            pickle.dump(self.scheduler.global_step, f)
+        with open(os.path.join(self.expdir, save_name), "w") as f:
+            json.dump(self.optimizer.state_dict(), f)
+        with open(os.path.join(self.expdir, save_name), "w") as f:
+            json.dump(self.scheduler.global_step, f)
 
         logger.info("Save the optimizer checkpoint!")
 

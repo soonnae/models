@@ -1,6 +1,6 @@
 import os
 import time
-import pickle
+import json  # Use JSON for serialization
 from tqdm import tqdm
 
 import librosa
@@ -30,8 +30,8 @@ class CycleGANTrainr(object):
         self.start_epoch = 0
         self.num_epochs = 200000
         self.mini_batch_size = 10
-        self.dataset_A = self.loadPickleFile(coded_sps_A_norm)
-        self.dataset_B = self.loadPickleFile(coded_sps_B_norm)
+        self.dataset_A = self.loadJsonFile(coded_sps_A_norm)  # Use JSON
+        self.dataset_B = self.loadJsonFile(coded_sps_B_norm)  # Use JSON
         self.device = flow.device("cuda" if flow.cuda.is_available() else "cpu")
 
         # Speech Parameters
@@ -492,13 +492,13 @@ class CycleGANTrainr(object):
                 sampling_rate,
             )
 
-    def savePickle(self, variable, fileName):
-        with open(fileName, "wb") as f:
-            pickle.dump(variable, f)
+    def saveJson(self, variable, fileName):
+        with open(fileName, "w") as f:
+            json.dump(variable, f)
 
-    def loadPickleFile(self, fileName):
-        with open(fileName, "rb") as f:
-            return pickle.load(f)
+    def loadJsonFile(self, fileName):
+        with open(fileName, "r") as f:
+            return json.load(f)
 
     def store_to_file(self, doc):
         doc = doc + "\n"

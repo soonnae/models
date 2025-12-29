@@ -3,7 +3,7 @@
 """
 import argparse
 import os
-import pickle
+import json  # Changed from pickle to json
 
 import numpy as np
 import oneflow as flow
@@ -28,7 +28,7 @@ def get_args():
     parser.add_argument("--datasets_path", type=str, default="speech_data")
     parser.add_argument("--output_path", type=str, default="save_models")
     parser.add_argument(
-        "--int_encoder", type=str, default="./speech_data/int_encoder.pkl"
+        "--int_encoder", type=str, default="./speech_data/int_encoder.json"  # Changed file extension to .json
     )
 
     args = parser.parse_args()
@@ -111,8 +111,8 @@ def train(opt):
 
         # evaluate
         int_encoder = opt.int_encoder
-        with open(int_encoder, "rb") as f:
-            int_to_char = pickle.load(f)["index2char"]
+        with open(int_encoder, "r") as f:  # Changed mode to 'r' for reading text
+            int_to_char = json.load(f)["index2char"]  # Changed from pickle to json
 
         decoder = GreedyDecoder(int_to_char)
 

@@ -1,7 +1,7 @@
 import os
 import tqdm
 import random
-import pickle
+import json
 
 import numpy as np
 import torch
@@ -15,11 +15,11 @@ class GPTDataset(torch.utils.data.Dataset):
         self.block_size = block_size
 
         directory, filename = os.path.split(file_path)
-        cached_file = os.path.join(directory, f"cached_{block_size}_{filename}")
+        cached_file = os.path.join(directory, f"cached_{block_size}_{filename}.json")
         if os.path.exists(cached_file):
             print("loading features from cached file")
-            with open(cached_file, "rb") as handle:
-                self.examples = pickle.load(handle)
+            with open(cached_file, "r", encoding="utf-8") as handle:
+                self.examples = json.load(handle)
         else:
             print("creating features from dataset file")
             self.examples = []
@@ -32,8 +32,8 @@ class GPTDataset(torch.utils.data.Dataset):
                 tokenized_text = tokenized_text[block_size:]
 
             print("saving features into cached file")
-            with open(cached_file, "wb") as handle:
-                pickle.dump(self.examples, handle, protocol=pickle.HIGHEST_PROTOCOL)
+            with open(cached_file, "w", encoding="utf-8") as handle:
+                json.dump(self.examples, handle)
 
     def __len__(self):
         return len(self.examples)

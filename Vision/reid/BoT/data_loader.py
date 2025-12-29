@@ -19,6 +19,7 @@ import random
 import numpy as np
 from PIL import Image, ImageOps
 import math
+import requests  # Added import for requests library
 
 
 class Market1501(object):
@@ -214,7 +215,12 @@ class Market1501(object):
             )
             sys.stdout.flush()
 
-        urllib.request.urlretrieve(url, dst, _reporthook)
+        # Use requests library to download the file
+        with requests.get(url, stream=True) as r:
+            r.raise_for_status()
+            with open(dst, 'wb') as f:
+                for chunk in r.iter_content(chunk_size=8192):
+                    f.write(chunk)
         sys.stdout.write("\n")
 
 

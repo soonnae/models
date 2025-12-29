@@ -598,14 +598,14 @@ def train(args):
                     )
 
             if args.eval_interval > 0 and step % args.eval_interval == 0:
-                auc = eval(cached_eval_batches, eval_graph, step)
+                auc = evaluate(cached_eval_batches, eval_graph, step)
                 if args.save_model_after_each_eval:
                     save_model(f"step_{step}_val_auc_{auc:0.5f}")
                 dlrm_module.train()
                 last_time = time.time()
 
     if args.eval_interval > 0 and step % args.eval_interval != 0:
-        auc = eval(cached_eval_batches, eval_graph, step)
+        auc = evaluate(cached_eval_batches, eval_graph, step)
         if args.save_model_after_each_eval:
             save_model(f"step_{step}_val_auc_{auc:0.5f}")
 
@@ -626,7 +626,7 @@ def batch_to_global(np_label, np_dense, np_sparse, is_train=True):
     return labels, dense_fields, sparse_fields
 
 
-def eval(cached_eval_batches, eval_graph, cur_step=0):
+def evaluate(cached_eval_batches, eval_graph, cur_step=0):
     num_eval_batches = len(cached_eval_batches)
     if num_eval_batches <= 0:
         return

@@ -85,25 +85,25 @@ for dset, path_list in zip(
 ):
     print(f"processing {dset} set, {len(path_list)} files")
     data = {}
-    output_path = os.path.join(output_dir, f"{dset}.pkl")
+    output_path = os.path.join(output_dir, f"{dset}.json")
     all_train_data = []
     for i, path in enumerate(sorted(path_list)):
         if i % 500 == 0 or i == len(path_list) - 1:
             print(f"processing {i} files")
         filename = path.strip().split("/")[-1]
         mel, mag = spec_feature_extraction(path)
-        data[filename] = mel
+        data[filename] = mel.tolist()  # Convert numpy array to list for JSON serialization
         if dset == "train" and i < n_utts_attr:
             all_train_data.append(mel)
     if dset == "train":
         all_train_data = np.concatenate(all_train_data)
         mean = np.mean(all_train_data, axis=0)
         std = np.std(all_train_data, axis=0)
-        attr = {"mean": mean, "std": std}
-        with open(os.path.join(output_dir, "attr.pkl"), "wb") as f:
-            pickle.dump(attr, f)
+        attr = {"mean": mean.tolist(), "std": std.tolist()}  # Convert to list for JSON
+        with open(os.path.join(output_dir, "attr.json"), "w") as f:
+            json.dump(attr, f)
     for key, val in data.items():
-        val = (val - mean) / std
-        data[key] = val
-    with open(output_path, "wb") as f:
-        pickle.dump(data, f)
+        val = (np.array(val) - mean) / std
+        data[key] = val.tolist()  # Convert back to list for JSON serialization
+    with open(output_path, "w") as f:
+        json.dump(data, f)

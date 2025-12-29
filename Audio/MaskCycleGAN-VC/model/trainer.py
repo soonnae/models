@@ -164,7 +164,7 @@ class MaskCycleGANVCTrainer(object):
             file object: The loaded pickle file object
         """
         with open(fileName, "rb") as f:
-            return pickle.load(f)
+            return pickle.load(f)  # @BUG_HERE
 
     def train(self):
         """Implements the training loop for MaskCycleGAN-VC

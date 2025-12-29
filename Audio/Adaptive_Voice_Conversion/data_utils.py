@@ -1,6 +1,5 @@
 import oneflow as flow
 from oneflow.utils.data import Dataset
-import pickle
 import json
 import numpy as np
 from oneflow.utils.data import DataLoader
@@ -55,8 +54,8 @@ class SequenceDataset(Dataset):
 
 class PickleDataset(Dataset):
     def __init__(self, pickle_path, sample_index_path, segment_size):
-        with open(pickle_path, "rb") as f:
-            self.data = pickle.load(f)
+        with open(pickle_path, "r") as f:
+            self.data = json.load(f)
         with open(sample_index_path, "r") as f:
             self.indexes = json.load(f)
         self.segment_size = segment_size

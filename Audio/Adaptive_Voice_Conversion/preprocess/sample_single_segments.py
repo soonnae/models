@@ -1,5 +1,4 @@
 import json
-import pickle
 import sys
 import os
 import random
@@ -9,8 +8,8 @@ sample_path = sys.argv[2]
 n_samples = int(sys.argv[3])
 segment_size = int(sys.argv[4])
 
-with open(pickle_path, "rb") as f:
-    data = pickle.load(f)
+with open(pickle_path, "r") as f:
+    data = json.load(f)
 
 # (utt_id, timestep, neg_utt_id, neg_timestep)
 samples = []
