@@ -635,7 +635,7 @@ def train(args):
 
             if step % batches_per_epoch == 0:
                 epoch += 1
-                auc, logloss = eval(
+                auc, logloss = evaluate(
                     args,
                     eval_graph,
                     tag="val",
@@ -672,7 +672,7 @@ def train(args):
         load_model(f"{args.model_save_dir}/best_checkpoint")
     if rank == 0:
         print("================ Test Evaluation ================")
-    eval(args, eval_graph, tag="test", cur_step=step, epoch=epoch)
+    evaluate(args, eval_graph, tag="test", cur_step=step, epoch=epoch)
 
 
 def np_to_global(np):
@@ -699,7 +699,7 @@ def prefetch_eval_batches(data_dir, batch_size, num_batches):
     return cached_eval_batches
 
 
-def eval(args, eval_graph, tag="val", cur_step=0, epoch=0, cached_eval_batches=None):
+def evaluate(args, eval_graph, tag="val", cur_step=0, epoch=0, cached_eval_batches=None):
     if tag == "val":
         batches_per_epoch = math.ceil(args.num_val_samples / args.batch_size)
     else:

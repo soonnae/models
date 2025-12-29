@@ -6,7 +6,7 @@ import librosa.display
 from random import shuffle
 import numpy as np
 from typing import Tuple, Union
-import pickle
+import json
 import pandas as pd
 import joblib
 from sklearn.model_selection import train_test_split
@@ -232,6 +232,7 @@ def get_data(
 
     cols = ["file_name", "features", "emotion"]
     mfcc_pd = pd.DataFrame(data=mfcc_data, columns=cols)
-    pickle.dump(mfcc_data, open(feature_path, "wb"))
+    with open(feature_path, "w") as f:
+        json.dump(mfcc_data, f)
 
     return load_feature(config, feature_path, train=train)

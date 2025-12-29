@@ -44,7 +44,7 @@ def infer(opt):
 
     int_encoder = opt.int_encoder
     with open(int_encoder, "rb") as f:
-        int_to_char = pickle.load(f)["index2char"]
+        int_to_char = pickle.load(f)["index2char"]  # @BUG_HERE
 
     decoder = GreedyDecoder(int_to_char)
 

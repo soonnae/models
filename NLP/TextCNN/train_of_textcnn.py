@@ -22,7 +22,7 @@ def _parse_args():
         help="save checkpoint root dir",
     )
     parser.add_argument(
-        "--save_vocab_path", type=str, default="vocab.pkl", help="save vocab root dir"
+        "--save_vocab_path", type=str, default="vocab.json", help="save vocab root dir"
     )
     parser.add_argument(
         "--load_checkpoint", type=str, default="", help="load checkpoint"
@@ -108,8 +108,8 @@ def main(args):
     x_test, y_test = utils.load_dataset(os.path.join(args.dataset_path, "test"))
     vocab_dct = utils.build_vocab(x_train + x_test)
 
-    with open(args.save_vocab_path, "wb") as f:
-        pickle.dump(vocab_dct, f)
+    with open(args.save_vocab_path, "w") as f:
+        json.dump(vocab_dct, f)
 
     x_train = utils.tensorize_data(x_train, vocab_dct)
     x_test = utils.tensorize_data(x_test, vocab_dct)

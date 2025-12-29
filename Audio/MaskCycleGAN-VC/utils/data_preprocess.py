@@ -10,12 +10,12 @@ import data_utils as preprocess
 
 def save_pickle(variable, fileName):
     with open(fileName, "wb") as f:
-        pickle.dump(variable, f)
+        pickle.dump(variable, f)  # @BUG_HERE_START
 
 
 def load_pickle_file(fileName):
     with open(fileName, "rb") as f:
-        return pickle.load(f)
+        return pickle.load(f)  # @BUG_HERE_END
 
 
 def preprocess_for_training(data_path, speaker_id, cache_folder):

@@ -2,7 +2,7 @@
 import oneflow.nn as nn
 import oneflow as flow
 from modeling import BertForPreTraining
-import pickle
+import json  # Changed from pickle to json
 import numpy as np
 
 
@@ -96,9 +96,9 @@ if __name__ == "__main__":
     )
 
     with open(
-        "../../OneFlow-Benchmark/LanguageModeling/BERT/lazy_input_output_1.pickle", "rb"
+        "../../OneFlow-Benchmark/LanguageModeling/BERT/lazy_input_output_1.json", "r"
     ) as handle:
-        lazy_info = pickle.load(handle)
+        lazy_info = json.load(handle)  # Changed from pickle.load to json.load
 
     total_loss = lazy_info["total_loss"]
     mlm_loss = lazy_info["mlm_loss"]

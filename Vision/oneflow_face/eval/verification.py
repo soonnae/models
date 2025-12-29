@@ -26,7 +26,7 @@
 
 import datetime
 import os
-import pickle
+import json
 
 
 import numpy as np
@@ -202,7 +202,8 @@ def evaluate(embeddings, actual_issame, nrof_folds=10, pca=0):
 
 
 def load_bin_cv(path, image_size):
-    bins, issame_list = pickle.load(open(path, "rb"), encoding="bytes")
+    with open(path, "rb") as f:
+        bins, issame_list = json.load(f)
     data_list = []
     for flip in [0, 1]:
         data = flow.empty(len(issame_list) * 2, 3, image_size[0], image_size[1])
@@ -323,5 +324,5 @@ def dumpR(data_set, backbone, batch_size, name="", data_extra=None, label_shape=
     embeddings = sklearn.preprocessing.normalize(embeddings)
     actual_issame = np.asarray(issame_list)
     outname = os.path.join("temp.bin")
-    with open(outname, "wb") as f:
-        pickle.dump((embeddings, issame_list), f, protocol=pickle.HIGHEST_PROTOCOL)
+    with open(outname, "w") as f:
+        json.dump((embeddings.tolist(), issame_list), f)

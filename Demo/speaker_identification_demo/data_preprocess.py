@@ -33,7 +33,7 @@ def data_preprocess(data_dir, data_preprocessed_dir):
                     if len(line.strip().split("_")) == 4:
                         id, start, end, text = line.strip().split("_")
                         wave_snip = waveform[
-                            int(eval(start) * fs) : int(eval(end) * fs)
+                            int(float(start) * fs) : int(float(end) * fs)
                         ]
                         filename = os.path.splitext(file)[0] + "_" + str(count) + ".wav"
 

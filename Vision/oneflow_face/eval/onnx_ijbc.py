@@ -1,6 +1,6 @@
 import argparse
 import os
-import pickle
+import json  # Changed from pickle to json
 import timeit
 
 import cv2
@@ -101,8 +101,8 @@ def read_template_pair_list(path):
 
 
 def read_image_feature(path):
-    with open(path, "rb") as fid:
-        img_feats = pickle.load(fid)
+    with open(path, "r") as fid:  # Changed from "rb" to "r"
+        img_feats = np.array(json.load(fid))  # Changed from pickle.load to json.load and converted to numpy array
     return img_feats
 
 

@@ -1,7 +1,7 @@
 import oneflow as flow
 import oneflow.nn.functional as F
 import yaml
-import pickle
+import json
 from model import AE
 from utils import *
 from functools import reduce
@@ -27,8 +27,8 @@ class Inferencer(object):
         # load model
         self.load_model()
 
-        with open(self.args.attr, "rb") as f:
-            self.attr = pickle.load(f)
+        with open(self.args.attr, "r") as f:
+            self.attr = json.load(f)
 
     def load_model(self):
         print(f"Load model from {self.args.model}")

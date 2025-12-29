@@ -1,6 +1,6 @@
 import os
 import random
-import pickle
+import json
 
 import numpy as np
 from sonopy import mfcc_spec
@@ -55,14 +55,14 @@ class IntegerEncode:
         return y
 
     def save(self, file_path):
-        """Save integer encoder model as a pickle file
+        """Save integer encoder model as a JSON file
 
         Args:
-            file_path (str): path to save pickle object
+            file_path (str): path to save JSON object
         """
-        file_name = os.path.join(file_path, "int_encoder.pkl")
-        with open(file_name, "wb") as f:
-            pickle.dump(self.__dict__, f)
+        file_name = os.path.join(file_path, "int_encoder.json")
+        with open(file_name, "w") as f:
+            json.dump(self.__dict__, f)
 
 
 def normalize(values):

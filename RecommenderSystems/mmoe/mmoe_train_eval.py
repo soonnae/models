@@ -659,7 +659,7 @@ def train(args):
 
             if step % batches_per_epoch == 0:
                 epoch += 1
-                auc_income, auc_marital = eval(
+                auc_income, auc_marital = evaluate(
                     args,
                     eval_graph,
                     cur_step=step,
@@ -675,7 +675,7 @@ def train(args):
             last_time = time.time()
 
     if step % batches_per_epoch != 0:
-        auc_income, auc_marital = eval(
+        auc_income, auc_marital = evaluate(
             args,
             eval_graph,
             cur_step=step,
@@ -727,7 +727,7 @@ def prefetch_eval_batches(data_dir, batch_size, num_batches):
     return cached_eval_batches
 
 
-def eval(args, eval_graph, cur_step=0, epoch=0, cached_eval_batches=None):
+def evaluate(args, eval_graph, cur_step=0, epoch=0, cached_eval_batches=None):
     batches_per_epoch = math.ceil(args.num_test_samples / args.batch_size)
 
     eval_graph.module.eval()

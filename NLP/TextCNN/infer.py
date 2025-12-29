@@ -2,7 +2,6 @@ import oneflow as flow
 
 import argparse
 import numpy as np
-import pickle
 import json
 
 from model import textCNN
@@ -15,7 +14,7 @@ def _parse_args():
         "--model_path", type=str, default="./checkpoints", help="model path"
     )
     parser.add_argument(
-        "--vocab_path", type=str, default="./vocab.pkl", help="vocab path"
+        "--vocab_path", type=str, default="./vocab.json", help="vocab path"
     )
     parser.add_argument(
         "--config_path", type=str, default="./config.json", help="config path"
@@ -32,8 +31,8 @@ def main(args):
     device = flow.device("cpu") if args.no_cuda else flow.device("cuda")
     with open(args.config_path, "r") as f:
         config = json.load(f)
-    with open(args.vocab_path, "rb") as f:
-        vocab = pickle.load(f)
+    with open(args.vocab_path, "r") as f:
+        vocab = json.load(f)
     textcnn = textCNN(
         word_emb_dim=config["word_emb_dim"],
         vocab_size=len(vocab),
