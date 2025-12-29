@@ -17,6 +17,7 @@ import os
 import tarfile
 import time
 from collections import defaultdict
+import subprocess
 
 import oneflow as torch
 import oneflow.nn as nn
@@ -137,8 +138,9 @@ def get_pretrain_model_path(pretrained_model_name_or_path, disable_auto_download
                 if os.path.exists("modelzoo_alibaba.json"):
                     break
                 print("Trying downloading name_mapping.json")
-                os.system(
-                    "wget http://atp-modelzoo-sh.oss-cn-shanghai.aliyuncs.com/release/easynlp_modelzoo/modelzoo_alibaba.json"
+                subprocess.run(
+                    ["wget", "http://atp-modelzoo-sh.oss-cn-shanghai.aliyuncs.com/release/easynlp_modelzoo/modelzoo_alibaba.json"],
+                    check=True
                 )
                 print("Success")
             except Exception:
@@ -188,11 +190,9 @@ def get_pretrain_model_path(pretrained_model_name_or_path, disable_auto_download
                         if not io.exists(get_dir_name(local_tar_file_path)):
                             io.makedirs(get_dir_name(local_tar_file_path))
 
-                        os.system(
-                            "wget "
-                            + remote_url
-                            + " -P "
-                            + get_dir_name(local_tar_file_path)
+                        subprocess.run(
+                            ["wget", remote_url, "-P", get_dir_name(local_tar_file_path)],
+                            check=True
                         )
 
                         tar = tarfile.open(local_tar_file_path, "r:gz")

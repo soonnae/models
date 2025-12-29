@@ -87,11 +87,11 @@ class IO:
         raise NotImplementedError
 
     def md5(self, path: str) -> str:
-        hash_md5 = hashlib.md5()
+        hash_sha256 = hashlib.sha256()
         with self.open(path, "rb") as f:
             for chunk in iter(lambda: f.read(4096), b""):
-                hash_md5.update(chunk)
-        return hash_md5.hexdigest()
+                hash_sha256.update(chunk)
+        return hash_sha256.hexdigest()
 
     re_remote = re.compile(r"(oss|https?)://")
 
