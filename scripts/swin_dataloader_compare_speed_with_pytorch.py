@@ -10,11 +10,11 @@ MD5 = "7f5cde8b5a6c411107517ac9b00f29db"
 def md5(fname):
     import hashlib
 
-    hash_md5 = hashlib.md5()
+    hash_sha256 = hashlib.sha256()  # Changed from MD5 to SHA256
     with open(fname, "rb") as f:
         for chunk in iter(lambda: f.read(4096), b""):
-            hash_md5.update(chunk)
-    result = hash_md5.hexdigest()
+            hash_sha256.update(chunk)
+    result = hash_sha256.hexdigest()
     return result
 
 

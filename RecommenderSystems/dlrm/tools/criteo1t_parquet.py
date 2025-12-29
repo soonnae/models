@@ -20,6 +20,7 @@ from pyspark.sql import SparkSession
 from pyspark.conf import SparkConf
 from pyspark.sql.functions import rand, udf, lit, xxhash64
 from pyspark.sql.types import FloatType, LongType
+import subprocess
 
 
 def make_dlrm_parquet(
@@ -95,8 +96,8 @@ if __name__ == "__main__":
     day_23 = os.path.join(args.input_dir, "day_23")
     test_csv = os.path.join(args.output_dir, "test.csv")
     val_csv = os.path.join(args.output_dir, "val.csv")
-    os.system(f"head -n {num_test_examples} {day_23} > {test_csv}")
-    os.system(f"tail -n +{num_test_examples + 1} {day_23} > {val_csv}")
+    subprocess.run(["head", "-n", str(num_test_examples), day_23], stdout=open(test_csv, 'w'), check=True)
+    subprocess.run(["tail", "-n", f"+{num_test_examples + 1}", day_23], stdout=open(val_csv, 'w'), check=True)
 
     # start spark session
     conf = SparkConf()
